@@ -7,7 +7,8 @@ void setup() {
     size(800, 800);
     tiles = new ArrayList<Tile>();
     pixelCount = 200;
-    debugStartboard();
+    //debugStartboardRowOf2s();
+    debugStartboardRightClickShouldDoNothing();
     //standardStartboard();
 }
 
@@ -16,7 +17,20 @@ void draw() {
     drawEverything();
 }
 
-void debugStartboard() {
+void debugStartboardRightClickShouldDoNothing() {
+    // add top three rows
+    int valueToAdd = 2;
+    for (int y = 0; y < 3; y++) {
+        for (int x = 0; x < 4; x++) {
+            Tile tile = new Tile(x, y);
+            tile.value = valueToAdd;
+            tiles.add(tile);
+            valueToAdd *= 2;
+        }
+    }
+}
+
+void debugStartboardRowOf2s() {
     for (int y = 0; y < 4; y++) {    
         Tile tile = new Tile(0, y);
         tile.value = 2;
