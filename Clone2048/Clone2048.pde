@@ -22,12 +22,33 @@ void draw() {
     drawEverything();
 }
 
+void createNewTile() {
+    boolean tileAdded = false;
+    while (!tileAdded) {
+        int x = int(random(0, 4)); 
+        int y = int(random(0, 4));  
+        // check that no tile already has those coordinates
+        boolean spaceIsFree = true;
+        for (Tile tile : tiles) {
+            if (tile.x == x && tile.y == y) {
+                spaceIsFree = false;
+                break;
+            }
+        }
+        if (spaceIsFree) {
+            tiles.add(new Tile(x, y));
+            tileAdded = true;
+        }
+    }
+}
+
 void upClicked() {
     for (int y = 0; y < 4; y++) {
         for (int x = 0; x < 4; x++) {
             moveTileIfHasCoords(x, y, 0, -1);
         }
     }
+    createNewTile();
 }
 
 void downClicked() {
@@ -36,6 +57,7 @@ void downClicked() {
             moveTileIfHasCoords(x, y, 0, 1);
         }
     }
+    createNewTile();
 }
 
 void rightClicked() {
@@ -44,6 +66,7 @@ void rightClicked() {
             moveTileIfHasCoords(x, y, 1, 0);
         }
     }
+    createNewTile();
 }
 
 void leftClicked() {
@@ -52,6 +75,7 @@ void leftClicked() {
             moveTileIfHasCoords(x, y, -1, 0);
         }
     }
+    createNewTile();
 }
 
 void moveTileIfHasCoords(int x, int y, int xdir, int ydir) {
