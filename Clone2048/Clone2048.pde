@@ -65,11 +65,11 @@ void createNewTile() {
     }
 }
 
-void actionsAfterClick() {
-    if (tiles.size() < 16) {
+void actionsAfterClick(boolean atleastOneTileMovedOrMerged) {
+    if (tiles.size() < 16 && atleastOneTileMovedOrMerged) {
         createNewTile();
+        updateCreationStatus();
     }
-    updateCreationStatus();
 }
 
 void updateCreationStatus() {
@@ -79,67 +79,87 @@ void updateCreationStatus() {
 }
 
 void upClicked() {
+    boolean atleastOneTileMovedOrMerged = false;
     for (int y = 0; y < 4; y++) {
         for (int x = 0; x < 4; x++) {
-            moveTileIfHasCoords(x, y, 0, -1);
+            if (moveTileIfHasCoords(x, y, 0, -1)) {
+                atleastOneTileMovedOrMerged = true;    
+            }
         }
     }
-    actionsAfterClick();
+    actionsAfterClick(atleastOneTileMovedOrMerged);
 }
 
 void downClicked() {
+    boolean atleastOneTileMovedOrMerged = false;
     for (int y = 3; y >= 0; y--) {
         for (int x = 0; x < 4; x++) {
-            moveTileIfHasCoords(x, y, 0, 1);
+            if (moveTileIfHasCoords(x, y, 0, 1)) {
+                atleastOneTileMovedOrMerged = true;    
+            }
         }
     }
-    actionsAfterClick();
+    actionsAfterClick(atleastOneTileMovedOrMerged);
 }
 
 void rightClicked() {
+    boolean atleastOneTileMovedOrMerged = false;
     for (int x = 3; x >= 0; x--) {
         for (int y = 0; y < 4; y++) {
-            moveTileIfHasCoords(x, y, 1, 0);
+            if (moveTileIfHasCoords(x, y, 1, 0)) {
+                atleastOneTileMovedOrMerged = true;    
+            }
         }
     }
-    actionsAfterClick();
+    actionsAfterClick(atleastOneTileMovedOrMerged);
 }
 
 void leftClicked() {
+    boolean atleastOneTileMovedOrMerged = false;
     for (int x = 0; x < 4; x++) {
         for (int y = 0; y < 4; y++) {
-            moveTileIfHasCoords(x, y, -1, 0);
+            if (moveTileIfHasCoords(x, y, -1, 0)) {
+                atleastOneTileMovedOrMerged = true;    
+            }
         }
     }
-    actionsAfterClick();
+    actionsAfterClick(atleastOneTileMovedOrMerged);
 }
 
-void moveTileIfHasCoords(int x, int y, int xdir, int ydir) {
+// returns true if specified tile moves or merges
+boolean moveTileIfHasCoords(int x, int y, int xdir, int ydir) {
     for (Tile tile : tiles) {
         if (tile.x == x && tile.y == y && !tile.wasCreatedByMergeThisTurn) {
-            moveTile(tile, xdir, ydir);   
-            return;
+            return moveTile(tile, xdir, ydir);
         }
     }
+    return false;
 }
 
 // Takes arguments: tile to move, and xdir and ydir as a direction.
 // Example: moveTile(tile, 0, -1) will move tile upwards until it meets another tile or a wall.
 // Exactly one of xdir and ydir must be 1 (or -1). The other one must be 0.
-void moveTile(Tile tile, int xdir, int ydir) {
+// returns true if specified tile moves or merges
+boolean moveTile(Tile tile, int xdir, int ydir) {
+    boolean tileMovedOrMerged = false; // Will become true only if something on the board actually changes
     while(true) {
         int new_x = tile.x + xdir;
         int new_y = tile.y + ydir;
-        if (!mergeIfMatchingTile(tile, new_x, new_y)) {
+        if (mergeIfMatchingTile(tile, new_x, new_y)) {
+            tileMovedOrMerged = true;
+        }
+        else {
             if (noTileOn(new_x, new_y) && new_x >= 0 && new_x <= 3 && new_y >= 0 && new_y <= 3) {
                 tile.x += xdir;
                 tile.y += ydir;
+                tileMovedOrMerged = true;
             }
             else {
                 break;    
             }
         }
     }
+    return tileMovedOrMerged;
 }
 
 // Will merge tile1 with tile2 on (x, y) if they have the same value.
