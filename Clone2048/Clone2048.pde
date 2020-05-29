@@ -35,10 +35,49 @@ void upClicked() {
     }
 }
 
+void downClicked() {
+    for (int y = 3; y >= 0; y--) {
+        for (int x = 0; x < 4; x++) {
+            for (Tile tile : tiles) {
+                if (tile.x == x && tile.y == y) {
+                    moveTile(tile, 0, 1);    
+                }
+            }
+        }
+    }
+}
+
+void rightClicked() {
+    for (int x = 3; x >= 0; x--) {
+        for (int y = 0; y < 4; y++) {
+            for (Tile tile : tiles) {
+                if (tile.x == x && tile.y == y) {
+                    moveTile(tile, 1, 0);    
+                }
+            }
+        }
+    }
+}
+
+void leftClicked() {
+    for (int x = 0; x < 4; x++) {
+        for (int y = 0; y < 4; y++) {
+            for (Tile tile : tiles) {
+                if (tile.x == x && tile.y == y) {
+                    moveTile(tile, -1, 0);    
+                }
+            }
+        }
+    }
+}
+
 // Takes arguments: tile to move, and xdir and ydir as a direction.
-// Example: moveTile(tile, 0, -1) will move tile upwards until it meets another tile or a wall
+// Example: moveTile(tile, 0, -1) will move tile upwards until it meets another tile or a wall.
+// Only use 0, 1 or -1 as arguments. (At least one must be 1 though)
 void moveTile(Tile tile, int xdir, int ydir) {
-    println("gonna try move 1 tile");
+    if (xdir != 1 || ydir != 1 || (xdir == 1 && ydir == 1)) {
+        println("ERROR INPUT for function moveTile");  
+    }
     while(true) {
         int new_x = tile.x + xdir;
         int new_y = tile.y + ydir;

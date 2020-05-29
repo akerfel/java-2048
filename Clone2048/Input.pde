@@ -3,5 +3,14 @@ void keyPressed() {
         if (keyCode == UP) {
             upClicked();   
         }
+        if (keyCode == DOWN) {
+            downClicked();   
+        }
+        if (keyCode == LEFT) {
+            leftClicked();   
+        }
+        if (keyCode == RIGHT) {
+            rightClicked();   
+        }
     }
 }
