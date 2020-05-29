@@ -52,7 +52,9 @@ void createNewTile() {
 }
 
 void actionsAfterClick() {
-    createNewTile();
+    if (tiles.size() < 16) {
+        createNewTile();
+    }
     updateCreationStatus();
 }
 
