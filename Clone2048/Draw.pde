@@ -4,16 +4,21 @@ void drawEverything() {
 
 void drawTiles() {
     for (Tile t : tiles) {
-        int xpixel = t.x * pixelCount;
-        int ypixel = t.y * pixelCount;
-        fill(0xF2, 0xB1, 0x79);
-        rect(xpixel, ypixel, pixelCount, pixelCount);
-        
-        // draw text value
-        textSize(40);
-        textAlign(CENTER, CENTER);
-        fill(255, 255, 255);
-        text(t.value, xpixel + pixelCount/2, ypixel + pixelCount/2);
+        drawTile(t);
     }
+}
+
+void drawTile(Tile t) {
+    // draw box
+    int offset = 2;
+    int xpixel = t.x * pixelCount + offset;
+    int ypixel = t.y * pixelCount + 2;
+    fill(0xF2, 0xB1, 0x79);
+    rect(xpixel, ypixel, pixelCount - offset, pixelCount - offset);
     
+    // draw text value
+    textSize(40);
+    textAlign(CENTER, CENTER);
+    fill(255, 255, 255);
+    text(t.value, xpixel + pixelCount/2 - offset, ypixel + pixelCount/2 - offset);
 }
