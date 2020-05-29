@@ -22,6 +22,8 @@ void draw() {
     drawEverything();
 }
 
+// unintended behavior atm: if you click but no tiles can move, a new tile will still be added.
+// This should not be the case. If no tiles can move, no new tile should be created.
 void createNewTile() {
     boolean tileAdded = false;
     while (!tileAdded) {
