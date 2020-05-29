@@ -1,3 +1,5 @@
+import java.util.Iterator;
+
 ArrayList<Tile> tiles;
 int pixelCount;
 Tile testTile;
@@ -83,7 +85,8 @@ void leftClicked() {
 void moveTileIfHasCoords(int x, int y, int xdir, int ydir) {
     for (Tile tile : tiles) {
         if (tile.x == x && tile.y == y) {
-            moveTile(tile, xdir, ydir);    
+            moveTile(tile, xdir, ydir);   
+            return;
         }
     }
 }
@@ -95,14 +98,34 @@ void moveTile(Tile tile, int xdir, int ydir) {
     while(true) {
         int new_x = tile.x + xdir;
         int new_y = tile.y + ydir;
-        if (noTileOn(new_x, new_y) && new_x >= 0 && new_x <= 3 && new_y >= 0 && new_y <= 3) {
-            tile.x += xdir;
-            tile.y += ydir;
+        if (!mergeIfMatchingTile(tile, new_x, new_y)) {
+            if (noTileOn(new_x, new_y) && new_x >= 0 && new_x <= 3 && new_y >= 0 && new_y <= 3) {
+                tile.x += xdir;
+                tile.y += ydir;
+            }
+            else {
+                break;    
+            }
         }
-        else {
-            break;    
+        
+    }
+}
+
+// Will merge tile1 with tile2 on (x, y) if they have the same value.
+// Returns true if merge successful.
+boolean mergeIfMatchingTile(Tile tile1, int x, int y) {
+    Iterator<Tile> it = tiles.iterator();
+    while (it.hasNext()) {
+        Tile tile2 = it.next();
+        if (tile1.value == tile2.value && x == tile2.x && y == tile2.y) {
+            it.remove();
+            tile1.x = x;
+            tile1.y = y;
+            tile1.value *= 2;
+            return true;
         }
     }
+    return false;
 }
 
 // returns true if there is on tile with position (x, y)

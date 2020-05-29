@@ -17,7 +17,7 @@ void drawTile(Tile t) {
     rect(xpixel, ypixel, pixelCount - offset, pixelCount - offset);
     
     // draw text value
-    textSize(40);
+    textSize(60);
     textAlign(CENTER, CENTER);
     fill(255, 255, 255);
     text(t.value, xpixel + pixelCount/2 - offset, ypixel + pixelCount/2 - offset);
