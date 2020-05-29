@@ -18,20 +18,20 @@ void draw() {
 
 void debugStartboard() {
     for (int y = 0; y < 4; y++) {    
-        Tile tile = new Tile(0, y, false);
+        Tile tile = new Tile(0, y);
         tile.value = 2;
         tiles.add(tile);
     }
 }
 
 void standardStartboard() {
-    createNewTile(false);
-    createNewTile(false);
+    createNewTile();
+    createNewTile();
 }
 
 // unintended behavior atm: if you click but no tiles can move, a new tile will still be added.
 // This should not be the case. If no tiles can move, no new tile should be created.
-void createNewTile(boolean wasCreatedThisTurn) {
+void createNewTile() {
     boolean tileAdded = false;
     while (!tileAdded) {
         int x = int(random(0, 4)); 
@@ -45,20 +45,20 @@ void createNewTile(boolean wasCreatedThisTurn) {
             }
         }
         if (spaceIsFree) {
-            tiles.add(new Tile(x, y, wasCreatedThisTurn));
+            tiles.add(new Tile(x, y));
             tileAdded = true;
         }
     }
 }
 
 void actionsAfterClick() {
-    createNewTile(true);
+    createNewTile();
     updateCreationStatus();
 }
 
 void updateCreationStatus() {
     for (Tile tile : tiles) {
-        tile.wasCreatedThisTurn = false;
+        tile.wasCreatedByMergeThisTurn = false;
     }
 }
 
@@ -100,7 +100,7 @@ void leftClicked() {
 
 void moveTileIfHasCoords(int x, int y, int xdir, int ydir) {
     for (Tile tile : tiles) {
-        if (tile.x == x && tile.y == y && !tile.wasCreatedThisTurn) {
+        if (tile.x == x && tile.y == y && !tile.wasCreatedByMergeThisTurn) {
             moveTile(tile, xdir, ydir);   
             return;
         }
@@ -132,12 +132,12 @@ boolean mergeIfMatchingTile(Tile tile1, int x, int y) {
     Iterator<Tile> it = tiles.iterator();
     while (it.hasNext()) {
         Tile tile2 = it.next();
-        if (tile1.value == tile2.value && !tile1.wasCreatedThisTurn && x == tile2.x && y == tile2.y) {
+        if (tile1.value == tile2.value && !tile1.wasCreatedByMergeThisTurn && x == tile2.x && y == tile2.y) {
             it.remove();
             tile1.x = x;
             tile1.y = y;
             tile1.value *= 2;
-            tile1.wasCreatedThisTurn = true;
+            tile1.wasCreatedByMergeThisTurn = true;
             return true;
         }
     }
