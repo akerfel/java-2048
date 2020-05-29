@@ -1,7 +1,7 @@
 public class Tile {
     int value;
-    int x;    // 1 to 4
-    int y;    // 1 to 4
+    int x;    // 0 to 3
+    int y;    // 0 to 3
     
     public Tile(int x, int y) {
         randomizeValue();
