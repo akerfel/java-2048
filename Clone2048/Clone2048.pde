@@ -20,17 +20,12 @@ void setup() {
 void draw() {
     background(150, 150, 150);
     drawEverything();
-    println("pos: " + testTile.y);
 }
 
 void upClicked() {
     for (int y = 0; y < 4; y++) {
         for (int x = 0; x < 4; x++) {
-            for (Tile tile : tiles) {
-                if (tile.x == x && tile.y == y) {
-                    moveTile(tile, 0, -1);    
-                }
-            }
+            moveTileIfHasCoords(x, y, 0, -1);
         }
     }
 }
@@ -38,11 +33,7 @@ void upClicked() {
 void downClicked() {
     for (int y = 3; y >= 0; y--) {
         for (int x = 0; x < 4; x++) {
-            for (Tile tile : tiles) {
-                if (tile.x == x && tile.y == y) {
-                    moveTile(tile, 0, 1);    
-                }
-            }
+            moveTileIfHasCoords(x, y, 0, 1);
         }
     }
 }
@@ -50,11 +41,7 @@ void downClicked() {
 void rightClicked() {
     for (int x = 3; x >= 0; x--) {
         for (int y = 0; y < 4; y++) {
-            for (Tile tile : tiles) {
-                if (tile.x == x && tile.y == y) {
-                    moveTile(tile, 1, 0);    
-                }
-            }
+            moveTileIfHasCoords(x, y, 1, 0);
         }
     }
 }
@@ -62,22 +49,23 @@ void rightClicked() {
 void leftClicked() {
     for (int x = 0; x < 4; x++) {
         for (int y = 0; y < 4; y++) {
-            for (Tile tile : tiles) {
-                if (tile.x == x && tile.y == y) {
-                    moveTile(tile, -1, 0);    
-                }
-            }
+            moveTileIfHasCoords(x, y, -1, 0);
+        }
+    }
+}
+
+void moveTileIfHasCoords(int x, int y, int xdir, int ydir) {
+    for (Tile tile : tiles) {
+        if (tile.x == x && tile.y == y) {
+            moveTile(tile, xdir, ydir);    
         }
     }
 }
 
 // Takes arguments: tile to move, and xdir and ydir as a direction.
 // Example: moveTile(tile, 0, -1) will move tile upwards until it meets another tile or a wall.
-// Only use 0, 1 or -1 as arguments. (At least one must be 1 though)
+// Exactly one of xdir and ydir must be 1 (or -1). The other one must be 0.
 void moveTile(Tile tile, int xdir, int ydir) {
-    if (xdir != 1 || ydir != 1 || (xdir == 1 && ydir == 1)) {
-        println("ERROR INPUT for function moveTile");  
-    }
     while(true) {
         int new_x = tile.x + xdir;
         int new_y = tile.y + ydir;
