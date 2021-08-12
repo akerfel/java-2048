@@ -8,8 +8,8 @@ void setup() {
     tiles = new ArrayList<Tile>();
     pixelCount = 200;
     //debugStartboardRowOf2s();
-    debugStartboardRightClickShouldDoNothing();
-    //standardStartboard();
+    //debugStartboardRightClickShouldDoNothing();
+    standardStartboard();
 }
 
 void draw() {
