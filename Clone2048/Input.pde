@@ -1,16 +1,16 @@
 void keyPressed() {
     if (key == CODED) {
         if (keyCode == UP) {
-            upClicked();   
+            upClicked();
         }
         if (keyCode == DOWN) {
-            downClicked();   
+            downClicked();
         }
         if (keyCode == LEFT) {
-            leftClicked();   
+            leftClicked();
         }
         if (keyCode == RIGHT) {
-            rightClicked();   
+            rightClicked();
         }
     }
 }
